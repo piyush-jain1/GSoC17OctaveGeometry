@@ -36,14 +36,12 @@ DEFUN_DLD(polyUnion, args, , "polyUnion help")
                         // 1st path
                         if(polcount==1)   
                         {     
-                              // std::cout<<"pointindex1 : "<<pointindex1<<" ------------- xcor1 : "<<pol1(pointindex1)<<std::endl;
                              xcor1.push_back(pol1(pointindex1)); 
                              i++;
                         }
                         // 2nd path
                         else if(polcount==2 and j>0)
                         {     
-                              // std::cout<<"pointindex1 : "<<pointindex1<<" ------------- xcor2 : "<<pol1(pointindex1)<<std::endl;
                               xcor2.push_back(pol1(pointindex1));
                               j--;
                         }
@@ -60,14 +58,12 @@ DEFUN_DLD(polyUnion, args, , "polyUnion help")
                         // 1st path
                         if(polcount==1)   
                         {     
-                              // std::cout<<"pointindex1 : "<<pointindex1<<" ------------- ycor1 : "<<pol1(pointindex1)<<std::endl;
                              ycor1.push_back(pol1(pointindex1)); 
                              i++;
                         }
                         // 2nd path
                         else if(polcount==2 and j>0)
                         {     
-                              // std::cout<<"pointindex1 : "<<pointindex1<<" ------------- ycor2 : "<<pol1(pointindex1)<<std::endl;
                               ycor2.push_back(pol1(pointindex1));
                               j--;
                         }
@@ -75,22 +71,19 @@ DEFUN_DLD(polyUnion, args, , "polyUnion help")
             }
             pointindex1++;
       }
-      // std::cout<<"Subject1 :"<<std::endl;
       for(j=0;j<xcor1.size();j++)
       {
             ClipperLib::IntPoint ip;
             ip.X = xcor1[j];
             ip.Y = ycor1[j];
-            // std::cout<<ip.X<<"      "<<ip.Y<<std::endl;
             subj[0].push_back(ip);
       }
-      // std::cout<<"Subject2 :"<<std::endl;
+     
       for(j=0;j<xcor2.size();j++)
       {
             ClipperLib::IntPoint ip;
             ip.X = xcor2[j];
             ip.Y = ycor2[j];
-            // std::cout<<ip.X<<"      "<<ip.Y<<std::endl;
             subj[1].push_back(ip);
       }
       polcount=1;
@@ -149,22 +142,20 @@ DEFUN_DLD(polyUnion, args, , "polyUnion help")
             
             pointindex2++;
       }
-      // std::cout<<"Clip1 :"<<std::endl;
+    
       for(j=0;j<xcor1.size();j++)
       {
             ClipperLib::IntPoint ip;
             ip.X = xcor1[j];
             ip.Y = ycor1[j];
-            // std::cout<<ip.X<<"      "<<ip.Y<<std::endl;
             clip[0].push_back(ip);
       }
-      // std::cout<<"Clip2 :"<<std::endl;
+      
       for(j=0;j<xcor2.size();j++)
       {
             ClipperLib::IntPoint ip;
             ip.X = xcor2[j];
             ip.Y = ycor2[j];
-            // std::cout<<ip.X<<"      "<<ip.Y<<std::endl;
             clip[1].push_back(ip);
       }
       ClipperLib::Clipper c;
@@ -176,7 +167,6 @@ DEFUN_DLD(polyUnion, args, , "polyUnion help")
       for(int i = 0; i < solution.size(); ++i)
           {
               ClipperLib::Path p3 = solution.at(i);
-                  //Vertex i.j represents jth vertex of ith disjoint polygon of the union
               for(int j = 0; j < p3.size(); ++j)
               {
                   ClipperLib::IntPoint ip = p3.at(j);
