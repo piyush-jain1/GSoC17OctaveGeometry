@@ -18,23 +18,25 @@
 # We compare the oct-file implementation of polygon union of the clipper library
 # with the oine provided by th emex interface.
 pkg load geometry
-c1 = [ 0.5, 0, 1];
-c2 = [-0.5, 0, 1];
-N  = 10;
+c1 = [ 0.5, 0, 5];
+c2 = [-0.5, 0, 5];
+N  = 4;
 p1 = circleAsPolygon (c1, N);
 p2 = circleAsPolygon (c2, N);
 
-tic
-%PU = polyUnion(p1, p2);
-toc
+
 
 tic
-cPU = clipPolygon(p1, p2, 3);
+union(p1, p2, 3);
 toc
 
-clf
-%drawPolygon (PU);
-drawPolygon (cPU);
+#tic
+#cPU = clipPolygon(p1, p2, 3);
+#toc
+
+#clf
+#drawPolygon (PU);
+#drawPolygon (cPU);
 
 # Piyush: Both are same problems, there was an issue in handling NaN as
 # delimeter, so I have provisionally used value-100000 in place of NaN
