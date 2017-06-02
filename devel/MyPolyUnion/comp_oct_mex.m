@@ -44,8 +44,8 @@ end
 x = 100:100:10000;
 y1 = elapsed_time_PU(x);
 y2 = elapsed_time_cPU(x);
-## polyUnion in yellow color
-plot(x,y1,'y');
+## polyUnion in blue color
+plot(x,y1,'b');
 hold
 ## clipPolygon in red color
 plot(x,y2,'r');
