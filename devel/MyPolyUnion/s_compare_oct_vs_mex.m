@@ -29,26 +29,29 @@ PU = union(p1, p2, 3);
 cPU = clipPolygon(p1, p2, 3);
 
 # generating data for the elapsed time for both the methods over a parameter N
+# JPi: pre-allocate the arrays to speed up!
+# spaces not TABS!
 for N=100:100:10000
-	p1 = circleAsPolygon (c1, N);
-	p2 = circleAsPolygon (c2, N);
-	tic
-	PU = union(p1, p2, 3);
-	elapsed_time_PU(N) = toc;
-	tic
-	cPU = clipPolygon(p1, p2, 3);
-	elapsed_time_cPU(N) = toc;
+  p1 = circleAsPolygon (c1, N);
+  p2 = circleAsPolygon (c2, N);
+  tic
+  PU                 = union (p1, p2, 3);
+  elapsed_time_PU(N) = toc;
+  tic
+  cPU                 = clipPolygon (p1, p2, 3);
+  elapsed_time_cPU(N) = toc;
 end
 
 ## Plotting graphs to compare the elapsed time of both
-x = 100:100:10000;
+x  = 100:100:10000;
 y1 = elapsed_time_PU(x);
 y2 = elapsed_time_cPU(x);
 ## polyUnion in blue color
-plot(x,y1,'b');
-hold
 ## clipPolygon in red color
-plot(x,y2,'r');
+plot (x,y1,'b;oct;', x, y2,'r;mex;');
+xlabel ("# of polygon vertices")
+ylabel ("Elapsed time [s]")
+
 
 
 
