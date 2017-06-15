@@ -28,7 +28,6 @@ DEFUN_DLD(polyUnion, args, nargout , "polyUnion help")
   if(nargin < 2)   print_usage();
   else
   { 
-    // retval.resize(100);
     octave_map subpoly  = args(0).map_value ();
     octave_map clippoly = args(1).map_value ();
     int64_t sub_size    = subpoly.numel();

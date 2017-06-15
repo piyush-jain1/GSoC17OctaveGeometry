@@ -14,10 +14,19 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+pol1 = [2 2; 6 2; 6 6; 2 6; 2 2; NaN NaN; 3 3; 3 5; 5 5; 5 3; 3 3];
+pol2 = [1 2; 7 4; 4 7; 1 2; NaN NaN; 2 3; 5 4; 4 5; 2 3];
 
-function [outpol, npol] = union (inpoly, clipoly, op, library = "clipper", varargin)
-	if ~(ismember (tolower (library), {"clipper"}))
-		error ('Octave:invalid-fun-call', "polyUnion: unimplemented polygon clipping library: '%s'", library);
-	endif
-	[outpol, npol] = polyUnion_clipper (inpoly, clipoly, op, varargin{:});
-endfunction
+
+pol3 = [0 0; 50 0; 50 50 ; 0 50];
+pol4 = [50 0; 150 0; 150 100; 50 100];
+
+pkg load geometry
+
+p0 = clipPolygon_mrf(pol1, pol2, 0);
+
+p1 = clipPolygon_mrf(pol1, pol2, 1);
+
+p2 = clipPolygon_mrf(pol1, pol2, 2);
+
+p3 = clipPolygon_mrf(pol1, pol2, 3);
