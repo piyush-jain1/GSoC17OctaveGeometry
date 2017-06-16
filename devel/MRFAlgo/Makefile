@@ -15,7 +15,7 @@ all: polybool.oct
 	$(MKOCTFILE) -Wall $< -o $@
 
 polybool.oct: $(OBJS) polybool.cc
-	$(MKOCTFILE) -Wall $< -o $@
+	$(MKOCTFILE) -Wall $(OBJS) polybool.cc -o $@
 
 clean:
 	-rm -f *.o *.oct PKG_*
