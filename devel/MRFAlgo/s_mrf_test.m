@@ -21,8 +21,6 @@ pol2 = [1 2; 7 4; 4 7; 1 2; NaN NaN; 2 3; 5 4; 4 5; 2 3];
 pol3 = [0 0; 50 0; 50 50 ; 0 50];
 pol4 = [50 0; 150 0; 150 100; 50 100];
 
-pkg load geometry
-
 p0 = clipPolygon_mrf(pol1, pol2, 0);
 
 p1 = clipPolygon_mrf(pol1, pol2, 1);
