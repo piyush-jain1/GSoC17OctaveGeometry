@@ -9,13 +9,13 @@ OBJS = \
 all: polybool.oct
 
 %.o: %.cpp
-	$(MKOCTFILE) -Wall -c $< -o $@
+	$(MKOCTFILE) -c $< -o $@
 
 %.oct: %.cc
-	$(MKOCTFILE) -Wall $< -o $@
+	$(MKOCTFILE) $< -o $@
 
 polybool.oct: $(OBJS) polybool.cc
-	$(MKOCTFILE) -Wall $(OBJS) polybool.cc -o $@
+	$(MKOCTFILE) $(OBJS) polybool.cc -o $@
 
 clean:
 	-rm -f *.o *.oct PKG_*
