@@ -27,18 +27,14 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
 DEFUN_DLD(polybool_martinez, args, , 
-"\
+          "\
 -*- texinfo -*-\n\
-
 @deftypefn {Loadable Function} {} polybool_martinez (@var{subj} ,@var{clip}, @var{operation}\n\
-Perform Boolean Operations on polygons\n\\n\
-
-@var{Operation} is a string representing the operation to perform. \n\
-Valid Operations are: 0 (DIFFERENCE), 1 (INTERSECTION), 2 (XOR) , 3 (UNION).\n
-It is an optional argument. If not provided, INTERSECTION is the default operation.\n\n
-
+Perform Boolean Operations on polygons\n\n\
 @var{subj}-@var{clip} are NaN Delimited Column/Row Vectors\n\n\
-
+@var{Operation} is a string representing the operation to perform. \n\
+Valid Operations are: 0 (DIFFERENCE), 1 (INTERSECTION), 2 (XOR) , 3 (UNION).\n\
+It is an optional argument. If not provided, INTERSECTION is the default operation.\n\n\
 @end deftypefn")
 { 
   int nargin = args.length();

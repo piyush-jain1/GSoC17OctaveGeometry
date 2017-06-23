@@ -28,3 +28,4 @@ p1 = clipPolygon(pol1, pol2, 1);
 p2 = clipPolygon(pol1, pol2, 2);
 
 p3 = clipPolygon(pol1, pol2, 3);
+

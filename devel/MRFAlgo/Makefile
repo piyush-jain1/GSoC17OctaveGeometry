@@ -14,7 +14,7 @@ all: polybool_martinez.oct
 %.oct: %.cc
 	$(MKOCTFILE) $< -o $@
 
-polybool.oct: $(OBJS) polybool_martinez.cc
+polybool_martinez.oct: $(OBJS) polybool_martinez.cc
 	$(MKOCTFILE) $(OBJS) polybool_martinez.cc -o $@
 
 clean:
