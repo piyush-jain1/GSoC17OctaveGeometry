@@ -42,19 +42,19 @@
 ## Created: 2017-06-09
 
 
-function [outpol, npol] = clipPolygon_mrf (inpoly, clippoly=[], method=1)
+function [outpol, npol] = clipPolygon_martinez (inpoly, clippoly=[], method=1)
 
   ## Input validation
   if (nargin < 3)
     print_usage ();
   endif
   if (! isnumeric (inpoly) || size (inpoly, 2) < 2)
-    error (" clipPolygon: inpoly should be a numeric Nx2 array");
+    error (" clipPolygon_martinez : inpoly should be a numeric Nx2 array");
   endif
   if (! isnumeric (clippoly) || size (clippoly, 2) < 2)
-    error (" clipPolygon: clippoly should be a numeric Nx2 array");
+    error (" clipPolygon_martinez : clippoly should be a numeric Nx2 array");
   elseif (! isnumeric (method) || method < 0 || method > 3)
-    error (" clipPolygon: operation must be a number in the range [0..3]");
+    error (" clipPolygon_martinez : operation must be a number in the range [0..3]");
   endif
 
   inpol = __polytostruct__ (inpoly);
@@ -62,7 +62,7 @@ function [outpol, npol] = clipPolygon_mrf (inpoly, clippoly=[], method=1)
   clpol = __polytostruct__ (clippoly);
   
   ## Perform boolean operation
-  [X, Y, npol] = polybool(inpol, clpol, method);
+  [X, Y, npol] = polybool_martinez(inpol, clpol, method);
   if(npol == 0)
     outpol = [ , ];
   else

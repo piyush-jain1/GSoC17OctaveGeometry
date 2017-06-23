@@ -6,7 +6,7 @@ OBJS = \
   polygon.o \
   utilities.o
 
-all: polybool.oct
+all: polybool_martinez.oct
 
 %.o: %.cpp
 	$(MKOCTFILE) -c $< -o $@
@@ -14,8 +14,8 @@ all: polybool.oct
 %.oct: %.cc
 	$(MKOCTFILE) $< -o $@
 
-polybool.oct: $(OBJS) polybool.cc
-	$(MKOCTFILE) $(OBJS) polybool.cc -o $@
+polybool.oct: $(OBJS) polybool_martinez.cc
+	$(MKOCTFILE) $(OBJS) polybool_martinez.cc -o $@
 
 clean:
 	-rm -f *.o *.oct PKG_*
