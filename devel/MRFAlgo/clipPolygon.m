@@ -15,7 +15,6 @@
 ## along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## Perform boolean operation on polygon(s) using one of boolean methods.
 ##
 ## @var{inpol} = Nx2 matrix of (X, Y) coordinates constituting the polygons(s)
 ## to be clipped. Polygons are separated by [NaN NaN] rows. @var{clippol} =
@@ -52,3 +51,68 @@ function [opol, npol] = clipPolygon (inpol, clipol, op, method = "martinez", var
 endfunction
 
 
+%!test
+%! pol1 = [-0.15 -0.15; 0.45 -0.15; 0.15 0.45];
+%! pol2 = [-0.05 -0.05; 0.15 0.35; 0.35 -0.05; NaN NaN; 0.05 0.05; 0.25 0.05; 0.15 0.25];
+%! opol[0] = [0.150000   0.250000; 0.050000   0.050000; 0.250000   0.050000; NaN        NaN; 0.150000   0.350000; -0.050000  -0.050000; 0.350000  -0.050000; NaN        NaN; 0.150000   0.450000; -0.150000  -0.150000; 0.450000  -0.150000];
+%! npol[0] = 3;
+%! opol[1] = [0.150000   0.250000; 0.050000   0.05000; 0.250000   0.050000; NaN        NaN; 0.150000   0.350000; -0.050000  -0.050000; 0.350000  -0.050000];
+%! npol[1] = 2;
+%! opol[2] = [0.150000   0.250000; 0.050000   0.050000; 0.250000   0.050000; NaN        NaN; 0.150000   0.350000; -0.050000  -0.050000; 0.350000  -0.050000; NaN        NaN; 0.150000   0.450000; -0.150000  -0.150000; 0.450000  -0.150000];
+%! npol[2] = 3;
+%! opol[3] = [0.15000   0.45000; -0.15000  -0.15000; 0.45000  -0.15000];
+%! npol[3] = 1;
+%! op   = {"Sub -clip", "AND / Intersection", "Exclusive OR", "OR / Union"};
+%! for i=1:numel(op)
+%!   [opol npol] = clipPolygon (pol1, pol2, i-1);
+%!   assert([opol npol],[opol[i-1] npol[i-1]]);
+%! endfor
+
+%!demo
+%! pol1 = [0.15 0.15; 0.55 0.45; 0.15 0.75];
+%! pol1a = polygon2patch(pol1);
+%! pol2 = [0.35 0.45; 0.75 0.15; 0.75 0.75];
+%! pol2a = polygon2patch(pol2);
+%! lw = 2;
+%! subplot (2, 6, [2 3])
+%! patch (pol1a(:, 1), pol1a(:, 2), 'facecolor', 'c', 'edgecolor', 'k', 'linewidth', lw);
+%! axis image
+%! grid on
+%! title ("1. Subject polygon")
+%!
+%! subplot (2, 6, [4 5])
+%! patch (pol1a(:, 1), pol1a(:, 2), 'facecolor', 'c', 'edgecolor', 'none');
+%! hold on
+%! patch (pol2a(:, 1), pol2a(:, 2), 'facecolor', 'y', 'edgecolor', 'b', 'linewidth', lw);
+%! axis image
+%! grid on
+%! title "2. Clip polygon"
+%!
+%! op   = {"Sub -clip", "AND / Intersection", "Exclusive OR", "OR / Union"};
+%! for i=1:numel(op)
+%!   subplot (6, 4, [12 16]+i);
+%!   [opol, npol] = clipPolygon (pol1, pol2, i-1);
+%!   opol = polygon2patch (opol);
+%!   patch (pol1a(:, 1), pol1a(:, 2), 'facecolor', 'c', 'edgecolor', 'none');
+%!   hold on
+%!   patch (pol2a(:, 1), pol2a(:, 2), 'facecolor', 'y', 'edgecolor', 'none');
+%!   patch (opol(:,1),opol(:,2), 'facecolor', 'g', 'edgecolor', 'r', ...
+%!         'linewidth', lw, 'erasemode', 'xor');
+%!   axis image
+%!   grid on
+%!   title (sprintf("%d. %s", i+2, op{i}));
+%!   axis off
+%! endfor
+%!
+%! subplot (10, 4, 37);
+%!   [opol, npol] = clipPolygon (pol2, pol1, 0);
+%!   opol = polygon2patch (opol);
+%!   patch (pol1a(:, 1), pol1a(:, 2), 'facecolor', 'c', 'edgecolor', 'none');
+%!   hold on
+%!   patch (pol2a(:, 1), pol2a(:, 2), 'facecolor', 'y', 'edgecolor', 'none');
+%!   patch (opol(:,1),opol(:,2), 'facecolor', 'g', 'edgecolor', 'r', ...
+%!         'linewidth', lw, 'erasemode', 'xor');
+%!   axis image
+%!   grid on
+%!   axis off
+%!   title "7. Clip - sub";

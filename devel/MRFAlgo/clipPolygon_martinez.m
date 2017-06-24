@@ -48,6 +48,9 @@ function [outpol, npol] = clipPolygon_martinez (inpoly, clippoly=[], method=1)
   if (nargin < 3)
     print_usage ();
   endif
+  if(isempty(inpoly) || isempty(clippoly))
+    error("clipPolygon_martinez : Empty polygon");
+  endif
   if (! isnumeric (inpoly) || size (inpoly, 2) < 2)
     error (" clipPolygon_martinez : inpoly should be a numeric Nx2 array");
   endif
