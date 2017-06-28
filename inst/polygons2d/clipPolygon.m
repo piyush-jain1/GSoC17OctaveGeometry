@@ -79,18 +79,22 @@
 ## http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Types/PolyFillType.htm
 ##
 ##
-## @seealso{clipPolygon_clipper, clipPolyline}
+## @seealso{clipPolygon_clipper, clipPolygon_mrf, clipPolyline}
 ## @end deftypefn
 
 ## Author: Philip Nienhuis <prnienhuis@users.sf.net>
 ## Created: 2017-03-21
 
-function [opol, npol] = clipPolygon (inpol, clipol, op, library = "clipper", varargin)
+function [opol, npol] = clipPolygon (inpol, clipol, op, method = "clipper", varargin)
 
-  if ~(ismember (tolower (library), {"clipper"}))
-    error ('Octave:invalid-fun-call', "clipPolygon: unimplemented polygon clipping library: '%s'", library);
+  if (ismember (tolower (method), {"clipper"}))
+  	[opol, npol] = clipPolygon_clipper (inpol, clipol, op, varargin{:});
+  elseif(ismember (tolower (method), {"mrf"}))
+  	[opol, npol] = clipPolygon_mrf (inpol, clipol, op, varargin{:});
+  else
+    error ('Octave:invalid-fun-call', "clipPolygon: unimplemented polygon clipping library: '%s'", method);
   endif
- [opol, npol] = clipPolygon_clipper (inpol, clipol, op, varargin{:});
+ 
 
 endfunction
 
