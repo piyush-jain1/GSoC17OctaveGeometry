@@ -36,7 +36,9 @@
 ## @end itemize
 ##
 ## The optional argument @var{library} specifies which library to use for clipping.
-## Currently only @asis{"clipper"} is implemented.
+## Currently @asis{"clipper"}  and @asis{"mrf"} are implemented. Option @asis{"clipper"} uses
+## a MEX interface to the Clipper library[1], option @asis{"mrf"} uses the 
+## algorithm by Martinez, Rueda and Feito[2] implemented with OCT files.
 ##
 ## Output array @var{outpol} will be an Nx2 array of polygons resulting from
 ## the requested boolean operation, or in case of just one input argument an
@@ -85,18 +87,25 @@
 ## Author: Philip Nienhuis <prnienhuis@users.sf.net>
 ## Created: 2017-03-21
 
-function [opol, npol] = clipPolygon (inpol, clipol, op, method = "clipper", varargin)
+function [opol, npol] = clipPolygon (inpol, clipol, op, library = "clipper", varargin)
 
-  if (ismember (tolower (method), {"clipper"}))
-  	[opol, npol] = clipPolygon_clipper (inpol, clipol, op, varargin{:});
-  elseif(ismember (tolower (method), {"mrf"}))
-  	[opol, npol] = clipPolygon_mrf (inpol, clipol, op, varargin{:});
-  else
-    error ('Octave:invalid-fun-call', "clipPolygon: unimplemented polygon clipping library: '%s'", method);
-  endif
- 
+  switch library
+
+    case 'clipper'
+      [opol, npol] = clipPolygon_clipper (inpol, clipol, op, varargin{:});
+
+    case 'mrf'
+      [opol, npol] = clipPolygon_mrf (inpol, clipol, op, varargin{:});
+
+    otherwise
+      error ('Octave:invalid-fun-call', ...
+          "clipPolygon: unimplemented polygon clipping library: '%s'", library);
+
+  endswitch
 
 endfunction
+
+%!error clipPolygon([],[],[],"abracadabra")
 
 %!demo
 %! pol1 = [2 2; 6 2; 6 6; 2 6; 2 2; NaN NaN; 3 3; 3 5; 5 5; 5 3; 3 3];

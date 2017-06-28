@@ -76,7 +76,7 @@
 ## Created: 2015-05-03
 ## Based on Clipper library, polyclipping.sf.net, 3rd Party, Matlab
 
-function [outpoly, npol] = clipPolygon_clipper (inpoly, clippoly=[], method=1, rules=0, rulec=0)
+function [outpoly, npol] = clipPolygon_clipper (inpoly, clippoly, method=1, rules=0, rulec=0)
 
   ## Input validation
   if (nargin < 3)
@@ -99,7 +99,7 @@ function [outpoly, npol] = clipPolygon_clipper (inpoly, clippoly=[], method=1, r
 
   ## Perform boolean operation
   outpol = clipper (inpol, clpol, method, rules, rulec);
-  npol = numel (outpol);
+  npol  = numel (outpol);
 
   if (! isempty (outpol))
     ## Morph struct output into [X,Y] array. Put NaNs between sub-polys. First X:
