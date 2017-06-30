@@ -15,6 +15,8 @@
 ## along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
+## @deftypefn {Function File}  [@var{outpol}, @var{npol}] = clipPolygon_mrf (@var{inpol}, @var{clippol})
+## @deftypefnx {Function File} [@var{outpol}, @var{npol}] = clipPolygon_mrf (@var{inpol}, @var{clippol}, @var{op})
 ## Perform boolean operation on polygon(s) using one of boolean methods.
 ##
 ## @var{inpol} = Nx2 matrix of (X, Y) coordinates constituting the polygons(s)
@@ -33,27 +35,31 @@
 ## @item 3: union ("OR") of @var{inpol} and @var{clippol}
 ## @end itemize
 ##
-
 ## Output array @var{outpol} will be an Nx2 array of polygons resulting from
 ## the requested boolean operation
-
+##
 ## Optional output argument @var{npol} indicates the number of output polygons.
-
+##
+## Know more about the algorithm by Martinez, Rueda and Feito : http://www4.ujaen.es/~fmartin/bool_op.html
+## 
 ## Created: 2017-06-09
-
 
 function [outpol, npol] = clipPolygon_mrf (inpoly, clippoly=[], method=1)
 
   ## Input validation
+
   if (nargin < 3)
     print_usage ();
   endif
+
   if(isempty(inpoly) || isempty(clippoly))
     error("clipPolygon_mrf : Empty polygon");
   endif
+
   if (! isnumeric (inpoly) || size (inpoly, 2) < 2)
     error (" clipPolygon_mrf : inpoly should be a numeric Nx2 array");
   endif
+
   if (! isnumeric (clippoly) || size (clippoly, 2) < 2)
     error (" clipPolygon_mrf : clippoly should be a numeric Nx2 array");
   elseif (! isnumeric (method) || method < 0 || method > 3)
@@ -66,12 +72,12 @@ function [outpol, npol] = clipPolygon_mrf (inpoly, clippoly=[], method=1)
 
   ## Perform boolean operation
   [X, Y, npol] = polybool_mrf(inpol, clpol, method);
+
   if(npol == 0)
     outpol = [ , ];
   else
     outpol = [X Y];
   endif
-
 
 endfunction
 
