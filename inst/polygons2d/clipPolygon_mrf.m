@@ -78,31 +78,41 @@ function [outpol, npol] = clipPolygon_mrf (inpoly, clippoly=[], method=1)
   else
     outpol = [X Y];
   endif
-
 endfunction
+
 
 %!test
 %! pol1 = [-0.15 -0.15; 0.45 -0.15; 0.15 0.45];
 %! pol2 = [-0.05 -0.05; 0.15 0.35; 0.35 -0.05; NaN NaN;
 %!          0.05 0.05; 0.25 0.05; 0.15 0.25];
-%! opol[0] = [0.15 0.25; 0.05 0.05; 0.25 0.05; NaN NaN;
+%! opol_0 = [0.15 0.25; 0.05 0.05; 0.25 0.05; NaN NaN;
 %!            0.15 0.35; -0.05 -0.05; 0.35 -0.05; NaN NaN;
-%!            0.15 0.45; -0.15 -0.15; 0.45 -0.15];
-%! npol[0] = 3;
-%! opol[1] = [0.15 0.25; 0.05 0.05; 0.25 0.05; NaN NaN;
+%!           0.15 0.45; -0.15 -0.15; 0.45 -0.15];
+%! npol_0 = 3;
+%! opol_1= [0.15 0.25; 0.05 0.05; 0.25 0.05; NaN NaN;
 %!            0.15 0.35; -0.05 -0.05; 0.35 -0.05];
-%! npol[1] = 2;
-%! opol[2] = [0.15 0.25; 0.05 0.05; 0.25 0.05; NaN NaN;
+%! npol_1 = 2;
+%! opol_2 = [0.15 0.25; 0.05 0.05; 0.25 0.05; NaN NaN;
 %!            0.15 0.35; -0.05 -0.05; 0.35 -0.05; NaN NaN;
 %!            0.15 0.45; -0.15 -0.15; 0.45 -0.15];
-%! npol[2] = 3;
-%! opol[3] = [0.15 0.45; -0.15 -0.15; 0.45 -0.15];
-%! npol[3] = 1;
-%! op   = {"Sub -clip", "AND / Intersection", "Exclusive OR", "OR / Union"};
-%! for i=1:numel(op)
-%!   [opol npol] = clipPolygon_mrf (pol1, pol2, i-1);
-%!   assert([opol npol],[opol[i-1] npol[i-1]]);
-%! endfor
+%! npol_2 = 3;
+%! opol_3 = [0.15 0.45; -0.15 -0.15; 0.45 -0.15];
+%! npol_3 = 1;
+%! [opol npol] = clipPolygon_mrf (pol1, pol2, 0);
+%! assert(opol, opol_0);
+%! assert(npol, npol_0);
+%! [opol npol] = clipPolygon_mrf (pol1, pol2, 1);
+%! assert(opol, opol_1);
+%! assert(npol, npol_1);
+%! [opol npol] = clipPolygon_mrf (pol1, pol2, 2);
+%! assert(opol, opol_2);
+%! assert(npol, npol_2);
+%! [opol npol] = clipPolygon_mrf (pol1, pol2, 3);
+%! assert(opol, opol_3);
+%! assert(npol, npol_3);
+
+%!error <clipPolygon_mrf : Empty polygon> clipPolygon_mrf([], [], 0);
+
 
 %!demo
 %! pol1 = [0.15 0.15; 0.55 0.45; 0.15 0.75];
