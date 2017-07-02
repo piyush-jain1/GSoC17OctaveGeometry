@@ -48,7 +48,7 @@ function [outpol, npol] = clipPolygon_mrf (inpoly, clippoly=[], method=1)
 
   ## Input validation
 
-  if (nargin < 3)
+  if (nargin < 2 || nargin > 3)
     print_usage ();
   endif
 
