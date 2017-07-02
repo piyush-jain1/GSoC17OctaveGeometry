@@ -57,13 +57,13 @@ function [outpol, npol] = clipPolygon_mrf (inpoly, clippoly=[], method=1)
   endif
 
   if (! isnumeric (inpoly) || size (inpoly, 2) < 2)
-    error (" clipPolygon_mrf : inpoly should be a numeric Nx2 array");
+    error ("clipPolygon_mrf : inpoly should be a numeric Nx2 array");
   endif
 
   if (! isnumeric (clippoly) || size (clippoly, 2) < 2)
-    error (" clipPolygon_mrf : clippoly should be a numeric Nx2 array");
+    error ("clipPolygon_mrf : clippoly should be a numeric Nx2 array");
   elseif (! isnumeric (method) || method < 0 || method > 3)
-    error (" clipPolygon_mrf : operation must be a number in the range [0..3]");
+    error ("clipPolygon_mrf : operation must be a number in the range [0..3]");
   endif
 
   inpol = __polytostruct__ (inpoly);
@@ -84,7 +84,7 @@ endfunction
 %!test
 %! pol1 = [-0.15 -0.15; 0.45 -0.15; 0.15 0.45];
 %! pol2 = [-0.05 -0.05; 0.15 0.35; 0.35 -0.05; NaN NaN;
-%!          0.05 0.05; 0.25 0.05; 0.15 0.25];
+%!        0.05 0.05; 0.25 0.05; 0.15 0.25];
 %! opol_0 = [0.15 0.25; 0.05 0.05; 0.25 0.05; NaN NaN;
 %!            0.15 0.35; -0.05 -0.05; 0.35 -0.05; NaN NaN;
 %!           0.15 0.45; -0.15 -0.15; 0.45 -0.15];
@@ -110,8 +110,12 @@ endfunction
 %! [opol npol] = clipPolygon_mrf (pol1, pol2, 3);
 %! assert(opol, opol_3);
 %! assert(npol, npol_3);
-
 %!error <clipPolygon_mrf : Empty polygon> clipPolygon_mrf([], [], 0);
+%!error
+%! pol1 = [0.15 0.15; 0.55 0.45; 0.15 0.75];
+%! pol2 = [0.35 0.45; 0.75 0.15; 0.75 0.75];
+%! clipPolygon_mrf(pol1, pol2, 4);
+ 
 
 
 %!demo
