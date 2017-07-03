@@ -64,7 +64,7 @@
 ## All polygons with a winding number < 0 are filled.
 ## @end itemize
 ## (for details see
-## http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Types/PolyFillType.htm
+## @uref{http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Types/PolyFillType.htm}
 ##
 ## Output array @var{outpol} will be an Nx2 array of polygons resulting from
 ## the requested boolean operation, or in case of just one input argument an
