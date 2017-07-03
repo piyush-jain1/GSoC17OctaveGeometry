@@ -41,7 +41,9 @@
 ## Optional output argument @var{npol} indicates the number of output polygons.
 ##
 ## Know more about the algorithm by Martinez, Rueda and Feito : http://www4.ujaen.es/~fmartin/bool_op.html
-## 
+##
+## @seealso{clipPolygon_clipper,clipPolygon}
+
 ## Created: 2017-06-09
 
 function [outpol, npol] = clipPolygon_mrf (inpoly, clippoly=[], method=1)
