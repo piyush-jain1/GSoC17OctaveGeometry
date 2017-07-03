@@ -15,8 +15,8 @@
 ## along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File}  [@var{outpol}, @var{npol}] = clipPolygon_mrf (@var{inpol}, @var{clippol})
-## @deftypefnx {Function File} [@var{outpol}, @var{npol}] = clipPolygon_mrf (@var{inpol}, @var{clippol}, @var{op})
+## @deftypefn {}  [@var{outpol}, @var{npol}] = clipPolygon_mrf (@var{inpol}, @var{clippol})
+## @deftypefnx {} [@var{outpol}, @var{npol}] = clipPolygon_mrf (@var{inpol}, @var{clippol}, @var{op})
 ## Perform boolean operation on polygon(s) using one of boolean methods.
 ##
 ## @var{inpol} = Nx2 matrix of (X, Y) coordinates constituting the polygons(s)
@@ -43,6 +43,7 @@
 ## Know more about the algorithm by Martinez, Rueda and Feito : http://www4.ujaen.es/~fmartin/bool_op.html
 ##
 ## @seealso{clipPolygon_clipper,clipPolygon}
+## @end deftypefn
 
 ## Created: 2017-06-09
 
