@@ -17,11 +17,12 @@
 ## -*- texinfo -*-
 ## @deftypefn {}  [@var{outpol}, @var{npol}] = clipPolygon_mrf (@var{inpol}, @var{clippol})
 ## @deftypefnx {} [@var{outpol}, @var{npol}] = clipPolygon_mrf (@var{inpol}, @var{clippol}, @var{op})
-## Perform boolean operation on polygon(s) using one of boolean methods.
+## Perform boolean operation on polygon(s) using one of boolean methods. It uses the algorithm by Martinez, Rueda and Feito implemented with OCT Files.
 ##
 ## @var{inpol} = Nx2 matrix of (X, Y) coordinates constituting the polygons(s)
-## to be clipped. Polygons are separated by [NaN NaN] rows. @var{clippol} =
-## another Nx2 matrix of (X, Y) coordinates representing the clip polygon(s).
+## to be clipped (subject polygon).  
+## @var{clippol} = Nx2 matrix of (X, Y) coordinates representing the clip polygon(s).
+## Polygons may contain holes. Polygons are separated by [NaN NaN] rows.
 ##
 ## The argument @var{op}, the boolean operation, can be:
 ##
@@ -56,17 +57,21 @@ function [outpol, npol] = clipPolygon_mrf (inpoly, clippoly=[], method=1)
   endif
 
   if(isempty(inpoly) || isempty(clippoly))
-    error("clipPolygon_mrf : Empty polygon");
+    error ('Octave:invalid-input-arg', ...
+            "clipPolygon_mrf : Empty polygon");
   endif
 
   if (! isnumeric (inpoly) || size (inpoly, 2) < 2)
-    error ("clipPolygon_mrf : inpoly should be a numeric Nx2 array");
+    error ('Octave:invalid-input-arg', ...
+            "clipPolygon_mrf : inpoly should be a numeric Nx2 array");
   endif
 
   if (! isnumeric (clippoly) || size (clippoly, 2) < 2)
-    error ("clipPolygon_mrf : clippoly should be a numeric Nx2 array");
+    error ('Octave:invalid-input-arg', ...
+            "clipPolygon_mrf : clippoly should be a numeric Nx2 array");
   elseif (! isnumeric (method) || method < 0 || method > 3)
-    error ("clipPolygon_mrf : operation must be a number in the range [0..3]");
+    error ('Octave:invalid-input-arg', ...
+            "clipPolygon_mrf : operation must be a number in the range [0..3]");
   endif
 
   inpol = __polytostruct__ (inpoly);

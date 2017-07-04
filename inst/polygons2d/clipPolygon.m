@@ -47,40 +47,6 @@
 ##
 ## Optional output argument @var{npol} indicates the number of output polygons.
 ##
-## The optional input arguments @var{args} are used to pass additonal arguments to the
-## underlying library. Clipper library allows a rule to be specified about
-## how to assess holes, or rather, how to assess polygon fill. This works as
-## follows: start with a winding number of zero (0). From a point outside all
-## polygons specified in @var{INPOL}, go to the center of the innermost
-## polygon and note which polygons are crossed. For each polygon boundary
-## crossing from right to left, increase the winding number, while for each
-## polygon crossing from left to right, decrement it, and then assign it to
-## the crossed polygon.
-## By passing two extra arguments @var{rules} and @var{rulec} the user can be
-## set rules individually for subject and clip polygons, respectively, as follows:
-##
-## @itemize
-## @item 0 Even-Odd, also called Alternate (= default):
-## The first polygon crossed specifies the outer boundary of a filled polygon,
-## the next polygon (if present) specifies the inner boundary of that filled
-## polygon, and so on. Winding direction (clockwise or counterclockwise) is
-## irrelevant here.
-##
-## @item 1 Non-Zero:
-## All polygons with a non-zero winding number are filled.
-##
-## @item 2 Positive:
-## All polygons with a winding number > 0 are filled. This is the usual setting
-## for counterclockwise polygons to be the outer, and clockwise polygons to be
-## the inner boundary ("holes") of complex polygons.
-##
-## @item 3 Negative:
-## All polygons with a winding number < 0 are filled.
-## @end itemize
-## (for details see
-## http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Types/PolyFillType.htm
-##
-##
 ## @seealso{clipPolygon_clipper, clipPolygon_mrf, clipPolyline}
 ## @end deftypefn
 
