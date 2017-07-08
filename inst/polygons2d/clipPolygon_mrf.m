@@ -23,6 +23,7 @@
 ## to be clipped (subject polygon).  
 ## @var{clippol} = Nx2 matrix of (X, Y) coordinates representing the clip polygon(s).
 ## Polygons may contain holes. Polygons are separated by [NaN NaN] rows.
+## Overlapping edges - the intersection of two edges of the same polygon can be a point, but cannot be a segment.
 ##
 ## The argument @var{op}, the boolean operation, can be:
 ##
