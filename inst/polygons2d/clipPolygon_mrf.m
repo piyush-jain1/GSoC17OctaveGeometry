@@ -15,15 +15,15 @@
 ## along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {}  [@var{outpol}, @var{npol}] = clipPolygon_mrf (@var{inpol}, @var{clippol})
-## @deftypefnx {} [@var{outpol}, @var{npol}] = clipPolygon_mrf (@var{inpol}, @var{clippol}, @var{op})
-## Perform boolean operation on polygon(s) using one of boolean methods. It uses the algorithm by Martinez, Rueda and Feito implemented with OCT Files.
+## @deffn {}  [@var{outpol}, @var{npol}] = clipPolygon_mrf (@var{inpol}, @var{clippol})
+## @deffnx {} [@var{outpol}, @var{npol}] = clipPolygon_mrf (@var{inpol}, @var{clippol}, @var{op})
+## Perform boolean operation on polygon(s) using the algorithm by Martinez, Rueda and Feito.
 ##
 ## @var{inpol} = Nx2 matrix of (X, Y) coordinates constituting the polygons(s)
-## to be clipped (subject polygon).  
+## to be clipped (subject polygon).
 ## @var{clippol} = Nx2 matrix of (X, Y) coordinates representing the clip polygon(s).
-## Polygons may contain holes. Polygons are separated by [NaN NaN] rows.
-## Overlapping edges - the intersection of two edges of the same polygon can be a point, but cannot be a segment.
+## Polygons may contain holes FIXME: HOW ARE THEY DEFINED?. Polygons are separated by [NaN NaN] rows.
+## The intersection of two edges of the same polygon can be a point, but cannot be a segment.
 ##
 ## The argument @var{op}, the boolean operation, can be:
 ##
@@ -42,10 +42,12 @@
 ##
 ## Optional output argument @var{npol} indicates the number of output polygons.
 ##
-## Know more about the algorithm by Martinez, Rueda and Feito : http://www4.ujaen.es/~fmartin/bool_op.html
+## Know more about the algorithm by Martinez, Rueda and Feito[1].
+##
+## [1]: @uref{http://www4.ujaen.es/~fmartin/bool_op.html}
 ##
 ## @seealso{clipPolygon_clipper,clipPolygon}
-## @end deftypefn
+## @end deffn
 
 ## Created: 2017-06-09
 
@@ -59,20 +61,20 @@ function [outpol, npol] = clipPolygon_mrf (inpoly, clippoly=[], method=1)
 
   if(isempty(inpoly) || isempty(clippoly))
     error ('Octave:invalid-input-arg', ...
-            "clipPolygon_mrf : Empty polygon");
+            "clipPolygon_mrf: Empty polygon");
   endif
 
   if (! isnumeric (inpoly) || size (inpoly, 2) < 2)
     error ('Octave:invalid-input-arg', ...
-            "clipPolygon_mrf : inpoly should be a numeric Nx2 array");
+            "clipPolygon_mrf: inpoly should be a numeric Nx2 array");
   endif
 
   if (! isnumeric (clippoly) || size (clippoly, 2) < 2)
     error ('Octave:invalid-input-arg', ...
-            "clipPolygon_mrf : clippoly should be a numeric Nx2 array");
+            "clipPolygon_mrf: clippoly should be a numeric Nx2 array");
   elseif (! isnumeric (method) || method < 0 || method > 3)
     error ('Octave:invalid-input-arg', ...
-            "clipPolygon_mrf : operation must be a number in the range [0..3]");
+            "clipPolygon_mrf: operation must be a number in the range [0..3]");
   endif
 
   inpol = __polytostruct__ (inpoly);
@@ -88,7 +90,6 @@ function [outpol, npol] = clipPolygon_mrf (inpoly, clippoly=[], method=1)
     outpol = [X Y];
   endif
 endfunction
-
 
 %!test
 %! pol1 = [-0.15 -0.15; 0.45 -0.15; 0.15 0.45];
@@ -119,13 +120,11 @@ endfunction
 %! [opol npol] = clipPolygon_mrf (pol1, pol2, 3);
 %! assert(opol, opol_3);
 %! assert(npol, npol_3);
-%!error <clipPolygon_mrf : Empty polygon> clipPolygon_mrf([], [], 0);
+%!error <clipPolygon_mrf: Empty polygon> clipPolygon_mrf([], [], 0);
 %!error
 %! pol1 = [0.15 0.15; 0.55 0.45; 0.15 0.75];
 %! pol2 = [0.35 0.45; 0.75 0.15; 0.75 0.75];
 %! clipPolygon_mrf(pol1, pol2, 4);
- 
-
 
 %!demo
 %! pol1 = [0.15 0.15; 0.55 0.45; 0.15 0.75];
@@ -175,3 +174,5 @@ endfunction
 %!   grid on
 %!   axis off
 %!   title "7. Clip - sub";
+
+#FIXME: demo showing how to pass polygons with holes (e.g. union of a polygon with and a polygon without holes)

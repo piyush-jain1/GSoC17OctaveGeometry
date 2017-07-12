@@ -1,4 +1,6 @@
-## Copyright (C) 2015-2017 Philip Nienhuis
+## Copyright (C) 2015-2017 - Philip Nienhuis
+## Copyright (C) 2017 - Juan Pablo Carbajal
+## Copyright (C) 2017 - Piyush Jain
 ##
 ## This program is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
@@ -14,13 +16,13 @@
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File}  [@var{outpol}, @var{npol}] = clipPolygon_clipper (@var{inpol}, @var{clippol})
-## @deftypefnx {Function File} [@var{outpol}, @var{npol}] = clipPolygon_clipper (@var{inpol}, @var{clippol}, @var{op})
-## @deftypefnx {Function File} [@var{outpol}, @var{npol}] = clipPolygon_clipper (@var{inpol}, @var{clippol}, @var{op}, @var{rules}, @var{rulec})
-## Perform boolean operation on polygon(s) using one of boolean methods.
+## @deffn {}  [@var{outpol}, @var{npol}] = clipPolygon_clipper (@var{inpol}, @var{clippol})
+## @deffnx {} [@var{outpol}, @var{npol}] = clipPolygon_clipper (@var{inpol}, @var{clippol}, @var{op})
+## @deffnx {} [@var{outpol}, @var{npol}] = clipPolygon_clipper (@var{inpol}, @var{clippol}, @var{op}, @var{rules}, @var{rulec})
+## Perform boolean operation on polygon(s) using the Clipper library.
 ##
 ## @var{inpol} = Nx2 matrix of (X, Y) coordinates constituting the polygons(s)
-## to be clipped.  Polygons are separated by [NaN NaN] rows.  @var{clippol} =
+## to be clipped. Polygons are separated by [NaN NaN] rows. @var{clippol} =
 ## another Nx2 matrix of (X, Y) coordinates representing the clip polygon(s).
 ##
 ## Optional argument @var{op}, the boolean operation, can be:
@@ -36,10 +38,10 @@
 ## @end itemize
 ##
 ## In addition a rule can be specified to instruct polyclip how to assess
-## holes, or rather, how to assess polygon fill.  This works as follows: start
-## with a winding number of zero (0).  From a point outside all polygons
+## holes, or rather, how to assess polygon fill. This works as follows: start
+## with a winding number of zero (0). From a point outside all polygons
 ## specified in @var{INPOL}, go to the center of the innermost polygon and note
-## which polygons are crossed.  For each polygon boundary crossing from right
+## which polygons are crossed. For each polygon boundary crossing from right
 ## to left, increase the winding number, while for each polygon crossing from
 ## left to right, decrement it, and then assign it to the crossed polygon.
 ## @var{rules} and @var{rulec} can be set individually for subject and clip
@@ -63,14 +65,17 @@
 ## @item 3 Negative:
 ## All polygons with a winding number < 0 are filled.
 ## @end itemize
-## (for details see
-## @uref{http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Types/PolyFillType.htm}
+## (for details see [1])
 ##
 ## Output array @var{outpol} will be an Nx2 array of polygons resulting from
 ## the requested boolean operation, or in case of just one input argument an
 ## Nx1 array indicating winding direction of each subpolygon in input argument
 ## @var{inpol}.
-## @end deftypefn
+##
+## [1]: @uref{http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Types/PolyFillType.htm}
+##
+## @seealso{clipPolygon_mrf,clipPolygon}
+## @end deffn
 
 ## Author: Philip Nienhuis <prnienhuis@users.sf.net>
 ## Created: 2015-05-03
@@ -120,3 +125,53 @@ function [outpoly, npol] = clipPolygon_clipper (inpoly, clippoly, method=1, rule
   endif
 
 endfunction
+
+%!demo
+%! pol1 = [2 2; 6 2; 6 6; 2 6; 2 2; NaN NaN; 3 3; 3 5; 5 5; 5 3; 3 3];
+%! pol2 = [1 2; 7 4; 4 7; 1 2; NaN NaN; 2.5 3; 5.5 4; 4 5.5; 2.5 3];
+%! lw   = 2;
+%!
+%! subplot (2, 6, [2 3])
+%! pol1a = polygon2patch (pol1);
+%! patch (pol1a(:, 1), pol1a(:, 2), 'facecolor', 'c', 'edgecolor', 'k', 'linewidth', lw);
+%! axis image
+%! title ("1. Subject polygon")
+%! axis off
+%!
+%! subplot (2, 6, [4 5])
+%! patch (pol1a(:, 1), pol1a(:, 2), 'facecolor', 'c', 'edgecolor', 'none');
+%! hold on
+%! pol2a = polygon2patch (pol2);
+%! patch (pol2a(:, 1), pol2a(:, 2), 'facecolor', 'y', 'edgecolor', 'b', 'linewidth', lw);
+%! axis image
+%! title "2. Clip polygon"
+%! axis off
+%!
+%! op   = {"Sub -clip", "AND / Intersection", "Exclusive OR", "OR / Union"};
+%! for i=1:numel(op)
+%!   subplot (6, 4, [12 16]+i);
+%!   [opol, npol] = clipPolygon_clipper (pol1, pol2, i-1);
+%!   opol = polygon2patch (opol);
+%!   patch (pol1a(:, 1), pol1a(:, 2), 'facecolor', 'c', 'edgecolor', 'none');
+%!   hold on
+%!   patch (pol2a(:, 1), pol2a(:, 2), 'facecolor', 'y', 'edgecolor', 'none');
+%!   patch (opol(:,1),opol(:,2), 'facecolor', 'g', 'edgecolor', 'r', ...
+%!         'linewidth', lw, 'erasemode', 'xor');
+%!   axis image
+%!   grid on
+%!   title (sprintf("%d. %s", i+2, op{i}));
+%!   axis off
+%! endfor
+%!
+%! subplot (10, 4, 37);
+%!   [opol, npol] = clipPolygon_clipper (pol2, pol1, 0);
+%!   opol = polygon2patch (opol);
+%!   patch (pol1a(:, 1), pol1a(:, 2), 'facecolor', 'c', 'edgecolor', 'none');
+%!   hold on
+%!   patch (pol2a(:, 1), pol2a(:, 2), 'facecolor', 'y', 'edgecolor', 'none');
+%!   patch (opol(:,1),opol(:,2), 'facecolor', 'g', 'edgecolor', 'r', ...
+%!         'linewidth', lw, 'erasemode', 'xor');
+%!   axis image
+%!   grid on
+%!   axis off
+%!   title "7. Clip - sub";
