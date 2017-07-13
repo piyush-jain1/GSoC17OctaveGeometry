@@ -22,7 +22,8 @@
 ## @var{inpol} = Nx2 matrix of (X, Y) coordinates constituting the polygons(s)
 ## to be clipped (subject polygon).
 ## @var{clippol} = Nx2 matrix of (X, Y) coordinates representing the clip polygon(s).
-## Polygons may contain holes FIXME: HOW ARE THEY DEFINED?. Polygons are separated by [NaN NaN] rows.
+## Polygons may contain holes. Holes are defined as the region enclosed within the boundaries of polygon which are not part of the polygon region. Polygon with holes can be defined as two contours, outer and inner separated by [NaN NaN] rows. 
+##
 ## The intersection of two edges of the same polygon can be a point, but cannot be a segment.
 ##
 ## The argument @var{op}, the boolean operation, can be:
@@ -128,8 +129,8 @@ endfunction
 
 %!demo
 %! pol1 = [0.15 0.15; 0.55 0.45; 0.15 0.75];
-%! pol1a = polygon2patch(pol1);
 %! pol2 = [0.35 0.45; 0.75 0.15; 0.75 0.75];
+%! pol1a = polygon2patch(pol1);
 %! pol2a = polygon2patch(pol2);
 %! lw = 2;
 %! subplot (2, 6, [2 3])
@@ -175,4 +176,51 @@ endfunction
 %!   axis off
 %!   title "7. Clip - sub";
 
-#FIXME: demo showing how to pass polygons with holes (e.g. union of a polygon with and a polygon without holes)
+%!demo
+%! pol1 = [1 1; 5 1; 3 7; NaN NaN; 2 2; 3 5; 4 2];
+%! pol2 = [3 1; 5 6; 1 6];
+%! pol1a = polygon2patch(pol1);
+%! pol2a = polygon2patch(pol2);
+%! lw = 2;
+%! subplot (2, 6, [2 3])
+%! patch (pol1a(:, 1), pol1a(:, 2), 'facecolor', 'c', 'edgecolor', 'k', 'linewidth', lw);
+%! axis image
+%! grid on
+%! title ("1. Subject polygon")
+%!
+%! subplot (2, 6, [4 5])
+%! patch (pol1a(:, 1), pol1a(:, 2), 'facecolor', 'c', 'edgecolor', 'none');
+%! hold on
+%! patch (pol2a(:, 1), pol2a(:, 2), 'facecolor', 'y', 'edgecolor', 'b', 'linewidth', lw);
+%! axis image
+%! grid on
+%! title "2. Clip polygon"
+%!
+%! op   = {"Sub -clip", "AND / Intersection", "Exclusive OR", "OR / Union"};
+%! for i=1:numel(op)
+%!   subplot (6, 4, [12 16]+i);
+%!   [opol, npol] = clipPolygon_mrf (pol1, pol2, i-1);
+%!   opol = polygon2patch (opol);
+%!   patch (pol1a(:, 1), pol1a(:, 2), 'facecolor', 'c', 'edgecolor', 'none');
+%!   hold on
+%!   patch (pol2a(:, 1), pol2a(:, 2), 'facecolor', 'y', 'edgecolor', 'none');
+%!   patch (opol(:,1),opol(:,2), 'facecolor', 'g', 'edgecolor', 'r', ...
+%!         'linewidth', lw, 'erasemode', 'xor');
+%!   axis image
+%!   grid on
+%!   title (sprintf("%d. %s", i+2, op{i}));
+%!   axis off
+%! endfor
+%!
+%! subplot (10, 4, 37);
+%!   [opol, npol] = clipPolygon_mrf (pol2, pol1, 0);
+%!   opol = polygon2patch (opol);
+%!   patch (pol1a(:, 1), pol1a(:, 2), 'facecolor', 'c', 'edgecolor', 'none');
+%!   hold on
+%!   patch (pol2a(:, 1), pol2a(:, 2), 'facecolor', 'y', 'edgecolor', 'none');
+%!   patch (opol(:,1),opol(:,2), 'facecolor', 'g', 'edgecolor', 'r', ...
+%!         'linewidth', lw, 'erasemode', 'xor');
+%!   axis image
+%!   grid on
+%!   axis off
+%!   title "7. Clip - sub";
