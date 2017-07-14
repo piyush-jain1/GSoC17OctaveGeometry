@@ -22,9 +22,27 @@
 ## @var{inpol} = Nx2 matrix of (X, Y) coordinates constituting the polygons(s)
 ## to be clipped (subject polygon).
 ## @var{clippol} = Nx2 matrix of (X, Y) coordinates representing the clip polygon(s).
-## Polygons may contain holes. Holes are defined as the region enclosed within the boundaries of polygon which are not part of the polygon region. Polygon with holes can be defined as two contours, outer and inner separated by [NaN NaN] rows. 
 ##
+## Polygons may have multiple non-intersecting regions. The contours are separated by [Nan NaN] rows.
+## Polygons may also contain holes. Holes are defined as the region enclosed within the boundaries of polygon which are not part of the polygon region. Here again, the inner and outer contours are separated by [Nan NaN] rows. Specifically, if a contour is lying inside another contour, it is automatically treated as a hole. 
+##
+## The following features are allowed in input polygons:
+##
+## @itemize
+## @item 0: Contours can be described in clockwise or counterclockwise order.
+##
+## @item 1: Holes.
+##
+## @item 2: A vertex of a polygon can touch (in a point) a vertex or edge of the same polygon.
+##
+## @item 3: Self-intersecting polygons.
+## @end itemize
+##
+## The following features are not allowed in input polygons:
+##
+## @itemize
 ## The intersection of two edges of the same polygon can be a point, but cannot be a segment.
+## @end itemize
 ##
 ## The argument @var{op}, the boolean operation, can be:
 ##
