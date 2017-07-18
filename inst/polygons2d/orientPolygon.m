@@ -1,4 +1,5 @@
 ## Copyright (C) 2016 - Juan Pablo Carbajal
+## Copyright (C) 2017 - Piyush Jain
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -45,7 +46,13 @@ function [x y] = orientPolygon (x, y=[], d = "ccw");
     print_usage ();
   endif
 
+  if(isempty(y))
+    x = reshape(x, numel(x)/2, 2);
+  endif
+
   if (!isempty (y))
+    x = reshape(x, numel(x), 1);
+    y = reshape(y, numel(y), 1);
     if (!strcmp (typeinfo (x), typeinfo (y)))
       error ('Octave:invalid-input-arg', 'X and Y should be of the same type');
     endif
@@ -53,7 +60,6 @@ function [x y] = orientPolygon (x, y=[], d = "ccw");
       error ('Octave:invalid-input-arg', 'X and Y should be of the same size');
     endif
   endif
-
   # define orientation mode
   mode_ccw = strcmpi (d, "ccw");
 
@@ -83,15 +89,23 @@ function [x y] = orientPolygon (x, y=[], d = "ccw");
       if ( (!isPolygonCCW (x) && mode_ccw) || (isPolygonCCW (x) && !mode_ccw) );
          x = reversePolygon (x);
       endif
-    endif
 
+      if(size(x)(2) == 1 && x(1) == x(2) && y(1) == y(2))
+        x = circshift(x,-1);
+        y = circshift(y,-1);
+
+      elseif(size(x)(2) == 2 && x(1,:) == x(2,:))
+        x = circshift(x,-1);
+      endif
+    endif
+    
     if (!isempty (y))
       y = x(:,2);
       x = x(:,1);
     endif
 
   endif
-
+  
 endfunction
 
 %!shared pccw, pcw, pxccw, pyccw, pxnan, pynan, pnan
@@ -138,3 +152,5 @@ endfunction
 %!test
 %! [x y] = orientPolygon (pxccw,pyccw,"cw");
 %! assert ([x y], pcw);
+
+
