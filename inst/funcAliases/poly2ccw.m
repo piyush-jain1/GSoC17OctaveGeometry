@@ -26,13 +26,28 @@
 ## @seealso{poly2cw,ispolycw}
 ## @end deftypefn
 
+## Created: 2017-07-18
+
 function [xccw, yccw]=poly2ccw(x,y);
   if (nargin != 2)
   #case of wrong number of input arguments
    print_usage();
   endif
   
+  if(isempty(x) || isempty(y))
+  	error ('Octave:invalid-input-arg', ...
+            "poly2ccw: Empty arguments");
+  endif
+
+   x = reshape(x, numel(x), 1);
+   y = reshape(y, numel(y), 1);
+
   [xccw, yccw] = orientPolygon(x,y,"ccw");
+
+  if(xccw(1) == xccw(2) && yccw(1) == yccw(2))
+    xccw = circshift(xccw,-1);
+    yccw = circshift(yccw,-1);
+  endif
   
 endfunction
 

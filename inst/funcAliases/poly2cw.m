@@ -1,4 +1,4 @@
-## Copyright (C) 2016 Amr Mohamed <amr_mohamed@live.com>
+## Copyright (C) 2017 - Piyush Jain
 ##
 ## This file is part of Octave.
 ##
@@ -26,13 +26,28 @@
 ## @seealso{poly2ccw,ispolycw}
 ## @end deftypefn
 
-function [xccw, yccw]=poly2cw(x,y);
+## Created: 2017-07-18
+
+function [xcw, ycw]=poly2cw(x,y);
   if (nargin != 2)
   #case of wrong number of input arguments
    print_usage();
   endif
   
-  [xccw, yccw] = orientPolygon(x,y,"cw");
+  if(isempty(x) || isempty(y))
+  	error ('Octave:invalid-input-arg', ...
+            "poly2ccw: Empty arguments");
+  endif
+
+   x = reshape(x, numel(x), 1);
+   y = reshape(y, numel(y), 1);
+
+  [xcw, ycw] = orientPolygon(x,y,"cw");
+
+  if(xcw(1) == xcw(2) && ycw(1) == ycw(2))
+    xcw = circshift(xcw,-1);
+    ycw = circshift(ycw,-1);
+  endif
   
 endfunction
 
