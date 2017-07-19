@@ -1,3 +1,4 @@
+## Copyright (C) 2016 - Amr Mohamed
 ## Copyright (C) 2017 - Piyush Jain
 ##
 ## This file is part of Octave.
@@ -33,7 +34,7 @@ function [xccw, yccw]=poly2ccw(x,y);
   #case of wrong number of input arguments
    print_usage();
   endif
-  
+
   if(isempty(x) || isempty(y))
   	error ('Octave:invalid-input-arg', ...
             "poly2ccw: Empty arguments");
@@ -48,7 +49,7 @@ function [xccw, yccw]=poly2ccw(x,y);
     xccw = circshift(xccw,-1);
     yccw = circshift(yccw,-1);
   endif
-  
+
 endfunction
 
 %!test

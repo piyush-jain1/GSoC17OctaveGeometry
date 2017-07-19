@@ -1,15 +1,16 @@
+## Copyright (C) 2016 - Amr Mohamed
 ## Copyright (C) 2017 - Piyush Jain
-## 
+##
 ## This program is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
 ## the Free Software Foundation; either version 3 of the License, or
 ## (at your option) any later version.
-## 
+##
 ## This program is distributed in the hope that it will be useful,
 ## but WITHOUT ANY WARRANTY; without even the implied warranty of
 ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ## GNU General Public License for more details.
-## 
+##
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -20,7 +21,7 @@
 ## @var{cellx}/@var{celly} is a cell array of polygons, representing the x/y coordinates of the points.
 ## @var{cellx}/@var{celly} is expected to be an Nx1 (column) cell array with each cell
 ## containing a matrix of Mx1 (X)/(Y) coordinates.
-## 
+##
 ## The function converts the cell arrays into column vectors containing the polygons separated by NaN(s)
 ##
 ## @seealso{polysplit}
@@ -61,11 +62,11 @@ function [vecx,vecy] = polyjoin(cellx,celly)
     error ('Octave:invalid-input-arg', ...
             "polyjoin: cellx and celly should be of dimension MX1");
   endif
-  
+
   vecx = joinPolygons(cellx);
   vecy = joinPolygons(celly);
 
-        
+
 endfunction
 
 %!test
@@ -86,4 +87,3 @@ endfunction
 %! [vecx,vecy]=polyjoin(x,y);
 %! assert (vecx, [1; 2; 3; NaN; 4; NaN; 5; 6; 7; 8; NaN; 9]);
 %! assert (vecy, [9; 8; 7; NaN; 6; NaN; 5; 4; 3; 2; NaN; 1]);
-
