@@ -25,7 +25,9 @@
 ##
 ## If polygon is self-crossing, the result is undefined.
 ##
-## If the polygon contains holes only the outer polygon is considered.
+## If x and y contain multiple contours, either in NaN-separated vector form or in cell array form, ispolycw returns a logical array containing one true or false value per contour.
+##
+## If a contour contains two or fewer vertices, ispolycw returns true.
 ##
 ## If @var{points} is a cell, each element is considered a polygon, the
 ## resulting @var{cw} array has the same shape as the cell.
@@ -45,13 +47,16 @@ function cw = ispolycw (px, py)
     
     px = reshape(px, numel(px)/2, 2);
 
-    # Remove holes
-    if any ( isnan (px) )
-      px = splitPolygons (px);
-      px = px{1};
-    end
-
-    cw = polygonArea (px) < 0;
+    px = splitPolygons (px);
+    for i=1:size(px)(1)
+      pol = px{i};
+      ## if contour contains two or fewer vertices
+      if size(pol)(1) < 3
+        cw(i,1) = true;
+      else
+        cw(i,1) = polygonArea (pol) < 0;
+      endif
+    endfor
 
   end
 end
@@ -63,10 +68,15 @@ end
 
 %!assert (~ispolycw (pccw));
 %!assert (ispolycw (pcw));
-%!assert (ispolycw ({pccw;pcw}), [false; true]);
-%!assert (~ispolycw(ph))
-%!assert (ispolycw({ph,pccw}),[false, false])
+%!assert (ispolycw ({pccw;pcw}), [false;true]);
+%!assert (ispolycw ({pccw,pcw}), [false,true]);
+%!assert (ispolycw(ph),[false;true]);
 
 %!test
 %! phcw = [pcw; nan(1,2); 0.5*pccw+[0.25 0.25]];
-%! assert (ispolycw(phcw))
+%! assert (ispolycw(phcw),[true;false]);
+
+%!test
+%! x=[0 0 2 2 NaN 0 2 0]; y=[0 2 2 0 NaN 0 0 3];
+%! assert(ispolycw(x,y),[true;false]);
+

@@ -1,4 +1,5 @@
 ## Copyright (C) 2016 - Juan Pablo Carbajal
+## Copyright (C) 2017 - Piyush Jain
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -26,7 +27,7 @@
 ##
 ## If polygon is self-crossing, the result is undefined.
 ##
-## If the polygon contains holes only the outer polygon is considered.
+## If x and y contain multiple contours, either in NaN-separated vector form or in cell array form, ispolyccw returns a logical array containing one true or false value per contour.
 ##
 ## If @var{points} is a cell, each element is considered a polygon, the
 ## resulting @var{cww} array has the same shape as the cell.
@@ -45,14 +46,17 @@ function ccw = ispolyccw (px, py)
     end
 
     px = reshape(px, numel(px)/2, 2);
-
-    # Remove holes since CCWness is not about holes
-    if any ( isnan (px) )
-      px = splitPolygons (px);
-      px = px{1};
-    end
-
-    ccw = polygonArea (px) > 0;
+    
+    px = splitPolygons (px);
+    for i=1:size(px)(1)
+      pol = px{i};
+      ## if contour contains two or fewer vertices
+      if size(pol)(1) < 3
+        ccw(i,1) = true;
+      else
+        ccw(i,1) = polygonArea (pol) > 0;
+      endif
+    endfor
 
   end
 end
@@ -66,9 +70,12 @@ end
 %!assert (~ispolyccw (pcw));
 %!assert (ispolyccw ({pccw;pcw}), [true;false]);
 %!assert (ispolyccw ({pccw,pcw}), [true,false]);
-%!assert (ispolyccw(ph))
-%!assert (ispolyccw({ph,pccw}),[true, true])
+%!assert (ispolyccw(ph),[true;false]);
 
 %!test
 %! phcw = [pcw; nan(1,2); 0.5*pccw+[0.25 0.25]];
-%! assert (~ispolyccw(phcw))
+%! assert (ispolyccw(phcw),[false;true]);
+
+%!test
+%! x=[0 0 2 2 NaN 0 2 0]; y=[0 2 2 0 NaN 0 0 3];
+%! assert(ispolyccw(x,y),[false;true]);
