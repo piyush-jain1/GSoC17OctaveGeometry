@@ -37,8 +37,10 @@ HTML_DIR        := $(TARGET_DIR)/$(PACKAGE)-html
 HTML_TARBALL    := $(TARGET_DIR)/$(PACKAGE)-html.tar.gz
 
 ## Octave binaries
-MKOCTFILE ?= mkoctfile
-OCTAVE    ?= octave --no-gui
+# Follow jwe suggestion on not inheriting these vars from
+# the enviroment, so they can be set as command line arguemnts
+MKOCTFILE := mkoctfile
+OCTAVE    := octave --no-gui
 
 ## Remove if not needed, most packages do not have PKG_ADD directives.
 M_SOURCES   := $(wildcard inst/*.m)

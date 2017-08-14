@@ -88,14 +88,18 @@ function [outpoly, npol] = clipPolygon_clipper (inpoly, clippoly, method=1, rule
     print_usage ();
   endif
   if (! isnumeric (inpoly) || size (inpoly, 2) < 2)
-    error (" clipPolygon: inpoly should be a numeric Nx2 array");
+    error ("Octave:invalid-input-arg", ...
+           "clipPolygon: inpoly should be a numeric Nx2 array");
   endif
   if (! isnumeric (clippoly) || size (clippoly, 2) < 2)
-    error (" clipPolygon: clippoly should be a numeric Nx2 array");
+    error ("Octave:invalid-input-arg", ...
+           "clipPolygon: clippoly should be a numeric Nx2 array");
   elseif (! isnumeric (method) || method < 0 || method > 3)
-    error (" clipPolygon: operation must be a number in the range [0..3]");
+    error ("Octave:invalid-input-arg", ...
+           "clipPolygon: operation must be a number in the range [0..3]");
   elseif (! isnumeric (rules) || ! isnumeric (rulec) || rules < 0 || rulec < 0)
-    error (" clipPolygon: fill type rules must be nummbers in range [0..3]");
+    error ("Octave:invalid-input-arg", ...
+           "clipPolygon: fill type rules must be nummbers in range [0..3]");
   endif
 
   [inpol, xy_mean, xy_magn] = __dbl2int64__ (inpoly, clippoly);
@@ -104,7 +108,7 @@ function [outpoly, npol] = clipPolygon_clipper (inpoly, clippoly, method=1, rule
 
   ## Perform boolean operation
   outpol = clipper (inpol, clpol, method, rules, rulec);
-  npol  = numel (outpol);
+  npol   = numel (outpol);
 
   if (! isempty (outpol))
     ## Morph struct output into [X,Y] array. Put NaNs between sub-polys. First X:
