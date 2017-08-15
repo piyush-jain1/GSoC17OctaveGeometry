@@ -36,29 +36,21 @@
 ## @end deftypefn
 
 function ccw = ispolyccw (px, py)
+  
+  if (nargin > 3 || nargin < 1)
+    print_usage ();
+  endif
 
-  if iscell (px)
-    ccw = cellfun (@ispolyccw, px);
-  else
-
-    if nargin == 2;
-      px = [px py];
-    end
-
+  if(nargin == 1)
     px = reshape(px, numel(px)/2, 2);
-    
-    px = splitPolygons (px);
-    for i=1:size(px)(1)
-      pol = px{i};
-      ## if contour contains two or fewer vertices
-      if size(pol)(1) < 3
-        ccw(i,1) = true;
-      else
-        ccw(i,1) = polygonArea (pol) > 0;
-      endif
-    endfor
+  else
+    px = reshape(px, numel(px), 1);
+    py = reshape(py, numel(py), 1);
+    px = [px py];
+  endif
 
-  end
+  ccw = isPolygonCCW(px);
+
 end
 
 %!shared pccw, pcw, ph
@@ -68,8 +60,7 @@ end
 
 %!assert (ispolyccw (pccw));
 %!assert (~ispolyccw (pcw));
-%!assert (ispolyccw ({pccw;pcw}), [true;false]);
-%!assert (ispolyccw ({pccw,pcw}), [true,false]);
+%!assert (ispolyccw ({pccw;pcw}), {true false});
 %!assert (ispolyccw(ph),[true;false]);
 
 %!test
