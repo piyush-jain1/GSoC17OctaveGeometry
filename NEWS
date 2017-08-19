@@ -1,5 +1,18 @@
 Summary of important user-visible changes for releases of the geometry package
 ===============================================================================
+geometry-3.1.0   Release Date: xx-xx-xxxx  Release Manager: Juan Pablo Carbajal
+===============================================================================
+** Added Functions
+  ispolycw poly2ccw poly2cw polyjoin polysplit clipPolygon_mrf
+  ispolyccw
+
+** Improved Functions
+  plotShape added demos, tests and now it accepts an optional argument
+            with the tolerance for the conversion to polyline.
+  transformEdge transformation was wrongly applied, it si fixed now.
+            Added demo
+
+===============================================================================
 geometry-3.0.0   Release Date: 27-03-2017  Release Manager: Juan Pablo Carbajal
 ===============================================================================
 This version of the package is not backward compatible for the following

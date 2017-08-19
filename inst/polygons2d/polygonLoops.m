@@ -25,7 +25,7 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {@var{loops} = } polygonLoops (@var{poly})
-## @deftypefn {Function File} {@var{loops} = } polygonLoops (@var{poly}, @var{tol})
+## @deftypefnx {Function File} {@var{loops} = } polygonLoops (@var{poly}, @var{tol})
 ## Divide a possibly self-intersecting polygon into a set of simple loops
 ##
 ##   @var{poly} is a polygone defined by a series of vertices,

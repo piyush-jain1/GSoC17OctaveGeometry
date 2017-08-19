@@ -127,6 +127,7 @@ geometry >> Computational Geometry
  curvature
  clipPolygon
  clipPolygon_clipper
+ clipPolygon_mrf
  distancePointPolygon
  distancePointPolyline
  distancePolygons
@@ -137,6 +138,8 @@ geometry >> Computational Geometry
  intersectEdgePolygon
  intersectLinePolygon
  isPointInPolygon
+ ispolycw
+ ispolyccw
  isPolygonCCW
  isPolygonCW_Clipper
  joinPolygons
@@ -155,7 +158,11 @@ geometry >> Computational Geometry
  polygons2d
  polygonSelfIntersections
  polygonSubcurve
+ polyjoin 
  polylineSelfIntersections
+ polysplit 
+ poly2ccw 
+ poly2cw 
  projPointOnPolyline
  rectAsPolygon
  reversePolygon

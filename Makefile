@@ -147,7 +147,7 @@ doctest: all
 	$(OCTAVE) --path "inst/" --path "src/" \
 	  --eval '${PKG_ADD}' \
 	  --eval 'pkg load doctest;' \
-	  --eval "targets = '$(shell (ls inst; ls src | grep .oct) | cut -f2 -d@ | cut -f1 -d.)';" \
+	  --eval "[~, targets] = system('(ls -R inst | grep \".m$$\"; ls src | grep \".oct$$\") | cut -f2 -d@ | cut -f1 -d.');" \
 	  --eval "targets = strsplit (targets, ' ');" \
 	  --eval "doctest (targets);"
 
